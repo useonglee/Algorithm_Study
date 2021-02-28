@@ -1,11 +1,11 @@
 const rockPaperScissors = function (num) {
   if(!num){ num = 3 }
-  let values = {'rock':3,'paper':2,'scissors':1}
+  let values = ['rock','paper','scissors']
   let result = [[]];
   for(let i = 0; i < num; i++){
-    result = result.reduce((acc,cur)=>{
-      for(let keys in values){
-          acc.push(cur.concat([keys]));     
+    result = result.reduce((acc,cur)=>{//result 의 요소하나를 받아와서 세배로 불리기
+      for(let j = 0; j < 3; j++){//세배로 불리기 위해 acc에 push를 세번 반복
+        acc.push(cur.concat([values[j]]));
       }
       
     return acc;
