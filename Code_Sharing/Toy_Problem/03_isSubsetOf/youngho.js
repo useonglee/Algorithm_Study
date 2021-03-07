@@ -4,7 +4,7 @@ const isSubsetOf = function (base, sample) {
       temp.push([]);
     }
   
-    base.forEach(el=>{
+    base.forEach(el=>{//배열 돌면서 끝자리 idx별로 이차원배열에 할당
       temp[el%10].push(el); 
     })
   
