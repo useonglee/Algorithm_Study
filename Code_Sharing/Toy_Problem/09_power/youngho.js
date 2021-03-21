@@ -1,5 +1,8 @@
 function power(base, exponent) {
-/////미완
-    return base**exponent
-}
-  
+    let result = 1;
+    for(let i = 0; i < exponent; i++){
+      result = (base*result)%94906249
+    }
+    
+    return result;
+  }
