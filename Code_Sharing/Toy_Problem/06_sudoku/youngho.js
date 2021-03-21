@@ -1,70 +1,48 @@
 const sudoku = function (board) {
-            /////미완...
-    let temp = [0,1,2,3,4,5,6,7,8,9];
-    let formatX = board.map(el=>{
-      return el.reduce((acc,cur) =>{
-        if(cur !== 0){
-          acc.push(cur)
-        }
-        return acc;
-      },[])
-    })
-    let formatY = [];
+
+  const isItValid = function(x, y, k){
+    // x
     for(let i = 0; i < 9; i++){
-      let temp = [];
-      for(let j = 0; j < 9; j++){
-        if(board[j][i] !== 0) {temp.push(board[j][i])}
-      }
-      formatY.push(temp);
+      if(i === x) continue;
+      if(board[i][y] === k) return false;
     }
-    let format33 = [];
-    for(let k = 0; k < 9; k++){
-      let temp = [];
-      for(let i = (k%3)*3; i < (k%3)*3+3 ; i++){
-        for(let j = parseInt(k/3)*3; j < parseInt(k/3)*3+3; j++){
-          if( board[i][j] !== 0 ){temp.push( board[i][j] )}
+    // y
+    for(let i = 0; i < 9; i++){
+      if(i === y) continue;
+      if(board[x][i] === k) return false;
+    }
+    // 3 x 3
+    for(let i = parseInt((x)/3)*3; i <= parseInt((x)/3)*3+2 ; i++){
+      for(let j = parseInt((y)/3)*3; j <= parseInt((y)/3)*3+2; j++){
+        if(x===i&&y===j) continue;
+        if( board[i][j] === k ) return false;
+      }
+    }
+    return true;
+  }
+  const sudokuRecursion = function(board,m,n){
+    if(n>8){
+      n=0;
+      m+=1;
+    }
+    if(m>8){
+      return true; 
+    } 
+    if(board[m][n] === 0){
+      for(let i = 1; i <= 9; i++){
+        if(isItValid(m,n,i)){// 1. m,n에 i가 들어갈 수 있으면
+          board[m][n] = i;   // 2. m,n에 i를 넣고
+          if(sudokuRecursion(board,m,n+1)){//3. 다음으로 진행
+            return true;// 마지막에 도달해서 true를 리턴하면 계속 true를 리턴하며 돌아옴.
+          }
+          board[m][n] = 0;// 5. 바로 이전 깊이의 재귀함수로 돌아와서 이전에 넣었던 값 0으로 초기화하고 for문을 지속하며 다음 들어갈 수를 재귀적으로 찾는다.
+                          //    for문 다돌았는데 못찾으면 4번이 실행되며 이전 깊이의 재귀함수에서 시작.
         }
       }
-      format33.push(temp)
+      return false;//4. 쭉 진행하다가 1~9까지 넣어봤는데 들어갈 수 있는 수가 없으면 false를 리턴하는데,
     }
-    ///0의 좌표배열들을 넣은 배열을 리턴해주는 함수
-    const zeroFinder = function(board){
-      let temp2 = [];
-      board.forEach((el,i) => {
-        let oneline = el.reduce((acc, cur, idx) => {
-          if(cur === 0){
-            acc.push([i,idx]);
-          };
-          return acc;
-        },[]);
-      temp2 = [...temp2, ...oneline]
-      });
-      return temp2;
-    };
-    
-  
-  
-    //좌표를 받아와서 그 좌표에 들어갈 수 있는 후보군 배열로 리턴하는 함수
-    const acceptableValueFinder = function(x, y){
-      return temp.filter( el => {
-        [ ...formatX[x], ...formatY[y],...format33[parseInt(x/3)+parseInt(y/3)+2] ].indexOf(el) === -1 
-      })
-    };
-  
-    //
-    let zeroCoord = zeroFinder(board);
-    let stack = [];
-    stack.push(zeroCoord.shift())
-    while(stack.length !== 0){
-  //////
-  //////
-  //////
-  //////
-    }
-  
-  
-  
-  
-  
-    return board
-  };
+    return sudokuRecursion(board,m,n+1)// 0이 아닌 값은 다음으로 진행
+  }
+  console.log(sudokuRecursion(board,0,0))// 재귀 실행 
+  return board
+};
