@@ -14,6 +14,10 @@ const robotPath = function (room, src, dst) {
         if(room[nr][nc] === 0){// 다음 좌표가 갈 수 있는 곳인 경우 
           q.push([nr, nc]);
           room[nr][nc] = room[r][c] + 1;
+          room.forEach(el=>{
+            console.log(JSON.stringify(el));
+          })
+          console.log(0);
         } 
         if(nr === dst[0] && nc === dst[1]) return room[r][c] + 1;// 목표좌표인 경우 현재까지 온 거리 +1 리턴
       }
@@ -21,3 +25,12 @@ const robotPath = function (room, src, dst) {
   }
   return -1
 };
+const room = [
+  [0, 1, 0, 1],
+  [0, 1, 0, 0],
+  [0, 1, 1, 0],
+  [0, 0, 0, 0],
+];
+const src = [0, 0];
+const dst = [0, 2];
+robotPath(room, src, dst)
